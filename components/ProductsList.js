@@ -4,15 +4,15 @@ import {
   View, Pressable
 } from 'react-native';
 
-const Products = (props) => {
-    props.name
+const Products = ( {name, deleteProduct, idString} ) => {
+    
     return (
       <Pressable
-        onPress={() =>console.log('clique')}
+        onPress={() =>deleteProduct(idString)}
         android_ripple={{color: 'purple'}}
       >
         <View style={styles.items}>
-            <Text style={styles.element}>{ props.name }</Text>
+            <Text style={styles.element}>{ name }</Text>
         </View>
       </Pressable>
     )
