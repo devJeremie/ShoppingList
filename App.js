@@ -9,6 +9,7 @@ import {
 //Ici j'importe mes components
 import Products from './components/ProductsList';
 import AddProducts from './components/AddProduct';
+import DismissKeyboard from './components/DismissKeyboard';
 
 export default function App() {
 
@@ -68,53 +69,54 @@ le key du product est le meme que celui invoque dans la fonction alors on efface
   
 
   return (
-    <View style={styles.container}>
-      <Modal
-        visible={showModal}
-        onRequestClose={() => setShowModal(false)}
-        animationType="slide"
-        hardwareAccelerated
-        transparent
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <View style= {styles.modalHeader}>
-              <Text style={styles.modalHeaderText}>Oups!!</Text>
+    <DismissKeyboard>
+      <View style={styles.container}>
+        <Modal
+          visible={showModal}
+          onRequestClose={() => setShowModal(false)}
+          animationType="slide"
+          hardwareAccelerated
+          transparent
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <View style= {styles.modalHeader}>
+                <Text style={styles.modalHeaderText}>Oups!!</Text>
+              </View>
+              <View style= {styles.modalBody}>
+                <Text style={styles.modalBodyText}>Merci d'indiquer plus d'un seul caractère</Text>
+              </View>
+              <View style= {styles.modalFooter}>
+                <Pressable
+                style={styles.pressablleBtnModal}
+                onPress={() => setShowModal(false)}
+                >
+                <Text style={styles.modalBtn}>OK</Text>
+                </Pressable>
+              </View>
             </View>
-            <View style= {styles.modalBody}>
-              <Text style={styles.modalBodyText}>Merci d'indiquer plus d'un seul caractère</Text>
-            </View>
-            <View style= {styles.modalFooter}>
-              <Pressable
-              style={styles.pressablleBtnModal}
-              onPress={() => setShowModal(false)}
-              >
-              <Text style={styles.modalBtn}>OK</Text>
-              </Pressable>
-            </View>
+
           </View>
+        </Modal>
 
-        </View>
-      </Modal>
+        <AddProducts submitHandler={submitHandler}/>
 
-      <AddProducts submitHandler={submitHandler}/>
-
-      <FlatList 
-        data={ myproducts }
-        renderItem={( { item } ) => (
-          <Products 
-            name={ item.name }
-            idString={item.key}
-            deleteProduct= {deleteProduct}
-          /> 
-        )}
-
-      />
-    </View>
+        <FlatList 
+          data={ myproducts }
+          renderItem={( { item } ) => (
+            <Products 
+              name={ item.name }
+              idString={item.key}
+              deleteProduct= {deleteProduct}
+            /> 
+          )}
+        />
+      </View>
+    </DismissKeyboard>
   );
 }
 /*explication map: l'array myproducts dans lequel on stock tout les produits
-via le spreadOperator(...currentMyProducts) on recuprere tout ceux existants et on va
+via le spreadOperator(...currentMyProducts) on recupere tout ceux existants et on va
 injecter celui qu'on vient de passer au niveau du textInputet on les affichent. 
 Comme nous n'avons ni id ni key dans les arrays, nous avons ajoutés l'argument 
 'index' qui va nous servir de key.*/
@@ -134,7 +136,8 @@ Comme nous n'avons ni id ni key dans les arrays, nous avons ajoutés l'argument
 const styles = StyleSheet.create({
   container: {
     padding: 40,
-    paddingTop: 60, 
+    paddingTop: 60,
+    flex: 1, 
   },
   modalContainer: {
     flex: 1,

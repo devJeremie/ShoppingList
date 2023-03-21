@@ -27,6 +27,13 @@ const AddProducts = ({ submitHandler }) => {
               placeholder="Nouveau produit"
               onChangeText={inputHandler}
               value= {product}
+              multiline//permet le multiligne à l'interieur de l'input
+              maxLength={9}//bloque le nbr de caractere a 9
+              secureTextEntry//permet de masquer les caracteres avec des *
+              //ne fonctionne pas avec le multiline
+              editable={true}//permet de bloquer l'input ou pas
+              
+              
             />
             <Button 
               title="Valider"
@@ -38,7 +45,6 @@ const AddProducts = ({ submitHandler }) => {
 
 const styles = StyleSheet.create({
     inputContainer: {
-      flexDirection: "row",
       marginBottom: 15,
     },
     textInput: {
@@ -48,6 +54,7 @@ const styles = StyleSheet.create({
       paddingLeft: 9,
       fontSize: 18,
       flexGrow: 1,
+      marginBottom: 9
     }
   });
 
