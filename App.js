@@ -4,12 +4,14 @@ import {
   View, TextInput,
   Button, ScrollView ,
   FlatList,Alert,
-  Modal, Pressable
+  Modal, Pressable,
+  Image, ImageBackground,
 } from 'react-native';
 //Ici j'importe mes components
 import Products from './components/ProductsList';
 import AddProducts from './components/AddProduct';
 import DismissKeyboard from './components/DismissKeyboard';
+import ButtonComponent from './components/ButtonComponent';
 
 export default function App() {
 
@@ -18,6 +20,8 @@ export default function App() {
   const[myproducts, setMyProducts] = useState([]);
 //ici on cree le state pour la modal
   const[showModal, setShowModal] = useState(false);
+  //La on cree le state pour le bouton dans la modal
+  const[displayModal, setDisplayModal] = useState(false);
 
 
   /*Ceci est créer afin de vider la liste si le user essai 3fois de valider un produit
@@ -35,6 +39,10 @@ un nouveau array que l'on va générer à la volée et ensuite on va appliquer l
 infos(product) on va ajouter une condition pour faire que si le produit ne contient
 pas au minimun 2 caractere on aura une modal*/
   const submitHandler = (product) => {
+
+    setDisplayModal(false);//arriver dans cette modal soi le produit et enregistre 
+    //et la modal disparait soi on ne respecte pas la condition
+
     if(product.length > 1) {
       const idString = Date.now().toString();
       setMyProducts( currentMyProducts => [{key: idString, name: product},...currentMyProducts]);
@@ -66,13 +74,21 @@ le key du product est le meme que celui invoque dans la fonction alors on efface
       return currentMyProducts.filter(product => product.key != key)
     }) 
   }
+
+  const cancelNewProduct = () => {
+    setDisplayModal(false);
+  }
   
 
   return (
     <DismissKeyboard>
-      <View style={styles.container}>
+      <ImageBackground 
+        style={styles.container}
+        source={require('./assets/background-App.jpg')}
+        //source={{uri: 'Adresse web de l'image'}}
+      >
         <Modal
-          visible={showModal}
+          visible={ showModal }
           onRequestClose={() => setShowModal(false)}
           animationType="slide"
           hardwareAccelerated
@@ -84,6 +100,10 @@ le key du product est le meme que celui invoque dans la fonction alors on efface
                 <Text style={styles.modalHeaderText}>Oups!!</Text>
               </View>
               <View style= {styles.modalBody}>
+                <Image 
+                  source={require('./assets/redCross.png')}
+                  style={styles.redCross}
+                />
                 <Text style={styles.modalBodyText}>Merci d'indiquer plus d'un seul caractère</Text>
               </View>
               <View style= {styles.modalFooter}>
@@ -98,8 +118,19 @@ le key du product est le meme que celui invoque dans la fonction alors on efface
 
           </View>
         </Modal>
-
-        <AddProducts submitHandler={submitHandler}/>
+        <ButtonComponent
+          onPressHandler={ () => setDisplayModal(true) }
+          style={styles.addProductBtn}
+        >
+          Nouveau produit
+        </ButtonComponent>
+        
+        
+        <AddProducts 
+        submitHandler={submitHandler} 
+        displayModal={ displayModal }
+        cancelNewProduct={ cancelNewProduct }
+        />
 
         <FlatList 
           data={ myproducts }
@@ -111,7 +142,7 @@ le key du product est le meme que celui invoque dans la fonction alors on efface
             /> 
           )}
         />
-      </View>
+      </ImageBackground>
     </DismissKeyboard>
   );
 }
@@ -148,7 +179,7 @@ const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: '#fff',
     width: '90%',
-    height: 250,
+    height: 300,
     borderRadius: 15,
     alignItems: 'center',
   },
@@ -189,6 +220,17 @@ const styles = StyleSheet.create({
     color: '#fff',
     textAlign: 'center',
     padding: 16,
+  },
+  redCross: {
+    width: 100,
+    height: 100,
+  },
+  addProductBtn: {
+    backgroundColor: "dodgerblue",
+    padding: 20,
+    borderRadius: 30,
+    borderWidth: 3,
+    borderColor: "white",
   }
   
 });
