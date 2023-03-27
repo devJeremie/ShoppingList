@@ -1,6 +1,7 @@
 import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import { StyleSheet, Text, View, Pressable } from 'react-native'
+import Colors from '../constants/colors'
 
 
 /*Le pressable dis que lon peut donc cliquer sur cette partie de code(View)
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
         padding: 9,
     },
     btnText: {
-        color: "#fff",
+        color: Colors.white,
         textAlign: "center",
         fontSize: 17,
     }

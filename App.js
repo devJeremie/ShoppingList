@@ -7,11 +7,26 @@ import {
   Modal, Pressable,
   Image, ImageBackground,
 } from 'react-native';
+
+import * as Font from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
 //Ici j'importe mes components
 import Products from './components/ProductsList';
 import AddProducts from './components/AddProduct';
 import DismissKeyboard from './components/DismissKeyboard';
 import ButtonComponent from './components/ButtonComponent';
+import Header from './components/Header';
+import Colors from './constants/colors';
+
+//const qui contient les fonts que l'on va utiliser, penser a ajouter le .ttf
+const fetchFonts = () => {
+  return Font.loadAsync({
+    'inter-bold' : require('./assets/fonts/Inter-Bold.ttf'),
+    'inter-regular' : require('./assets/fonts/Inter-Regular.ttf'),
+    'pacifico-regular' : require('./assets/fonts/Pacifico-Regular.ttf'),
+  })
+}
 
 export default function App() {
 
@@ -22,6 +37,18 @@ export default function App() {
   const[showModal, setShowModal] = useState(false);
   //La on cree le state pour le bouton dans la modal
   const[displayModal, setDisplayModal] = useState(false);
+  // on cree la const pour les fonts
+  const[fontsLoaded, setFontsLoaded] = useState(false);
+
+  if(!fontsLoaded) {
+    return (
+      <AppLoading 
+        startAsync={fetchFonts}
+        onFinish={ () => setFontsLoaded(true)}
+        onError={(error) => console.log(error)}
+      />
+    )
+  }
 
 
   /*Ceci est créer afin de vider la liste si le user essai 3fois de valider un produit
@@ -83,10 +110,13 @@ le key du product est le meme que celui invoque dans la fonction alors on efface
   return (
     <DismissKeyboard>
       <ImageBackground 
-        style={styles.container}
+        style={styles.bgImage}
         source={require('./assets/background-App.jpg')}
         //source={{uri: 'Adresse web de l'image'}}
       >
+      <Header />
+      
+      <View style={styles.container}>
         <Modal
           visible={ showModal }
           onRequestClose={() => setShowModal(false)}
@@ -142,6 +172,7 @@ le key du product est le meme que celui invoque dans la fonction alors on efface
             /> 
           )}
         />
+        </View>
       </ImageBackground>
     </DismissKeyboard>
   );
@@ -167,7 +198,6 @@ Comme nous n'avons ni id ni key dans les arrays, nous avons ajoutés l'argument
 const styles = StyleSheet.create({
   container: {
     padding: 40,
-    paddingTop: 60,
     flex: 1, 
   },
   modalContainer: {
@@ -177,7 +207,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.2)',
   },
   modalContent: {
-    backgroundColor: '#fff',
+    backgroundColor: Colors.white,
     width: '90%',
     height: 300,
     borderRadius: 15,
@@ -190,7 +220,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderToprightRadius: 15,
     borderBottomWidth: 1,
-    borderBottomColor: 'lightgray',
+    borderBottomColor: Colors.secondary,
   },
   modalHeaderText: {
     color:'grey',
@@ -211,13 +241,13 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   pressablleBtnModal: {
-    backgroundColor: 'lightseagreen',
+    backgroundColor: Colors.info,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15,
   },
   modalBtn: {
     fontSize: 17,
-    color: '#fff',
+    color: Colors.white,
     textAlign: 'center',
     padding: 16,
   },
@@ -226,11 +256,16 @@ const styles = StyleSheet.create({
     height: 100,
   },
   addProductBtn: {
-    backgroundColor: "dodgerblue",
+    backgroundColor: Colors.blue,
     padding: 20,
     borderRadius: 30,
     borderWidth: 3,
-    borderColor: "white",
+    borderColor:  Colors.white,
+    marginBottom: 20,
+  }, 
+  bgImage: {
+    flex: 1,
+
   }
   
 });

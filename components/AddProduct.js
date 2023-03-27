@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { 
   StyleSheet,View, 
-  TextInput, Button,
-  Modal, Pressable
+  Modal, Pressable,
+  Text, 
 } from 'react-native';
+import BodyText from './BodyText';
+
 import ButtonComponent from './ButtonComponent';
+import Input from './Input';
 
         
 const AddProducts = ({ submitHandler, displayModal, cancelNewProduct }) => {
@@ -15,7 +18,8 @@ const AddProducts = ({ submitHandler, displayModal, cancelNewProduct }) => {
    
     //ici on va gere la modification de notre state
   const inputHandler = (val) => {
-    setProduct(val)
+    const regex = /[^a-z]/gi;//regex pour le textInput
+    setProduct(val.replace(regex, ''));//remplace le caractère ne se trouvant pas dls les lettre a à z par une chaine vide
   }
   const handleClick = () =>{
     submitHandler(product);
@@ -31,16 +35,19 @@ const AddProducts = ({ submitHandler, displayModal, cancelNewProduct }) => {
         animationType="slide"
       >
         <View style={styles.inputContainer}>
-            <TextInput 
-              style={styles.textInput}
-              placeholder="Nouveau produit"
-              onChangeText={inputHandler}//prend la valeur passe et via le setter renvoie
-              value= {product}
-              multiline//permet le multiligne à l'interieur de l'input
-              maxLength={9}//bloque le nbr de caractere a 9
-              secureTextEntry//permet de masquer les caracteres avec des *
-              //ne fonctionne pas avec le multiline
-              editable={true}//permet de bloquer l'input ou pas
+
+          <BodyText>Veuillez indiquer un produit</BodyText>
+           
+            <Input 
+               style={styles.textInput}
+               textPlaceholder="Nouveau produit"
+               onChangeHandler={inputHandler}//prend la valeur passe et via le setter renvoie
+               inputValue= {product}
+              // multiline permet le multiligne à l'interieur de l'input
+               maxLength={9}//bloque le nbr de caractere a 9
+               secureTextEntry//permet de masquer les caracteres avec des *
+               //ne fonctionne pas avec le multiline
+              // editable={true}//permet de bloquer l'input ou pas
             />
             <View style={styles.btnContainer}>
               <ButtonComponent 
@@ -69,12 +76,13 @@ const styles = StyleSheet.create({
     },
     textInput: {
       borderColor: "grey",
-      borderWidth: 1,
       padding: 5,
-      paddingLeft: 9,
+      textAlign: 'center',
       fontSize: 18,
-      //flexGrow: 1,
-      marginBottom: 9
+      marginBottom: 15,
+      borderRadius: 30,
+      height: 50,
+      fontSize: 20
     },
     btnContainer: {
       flexDirection: "row",
