@@ -12,5 +12,5 @@ export default StyleSheet.create({
         color: Colors.secondary,
         fontSize: 19,
     },
-    //et a la suite on pourrai definir d'autre composant 
+    //et a la suite on pourrait definir d'autre composant 
 })
