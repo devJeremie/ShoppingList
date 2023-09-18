@@ -30,8 +30,8 @@ const fetchFonts = () => {
 
 export default function App() {
 
-//ici on recrée un state qui appele un tableau ici les valeurs 
-//passer dans l'input seront enregistrés
+//ici on recrée un state qui appele un tableau  
+//ici les valeurs passer dans l'input seront enregistrés
   const[myproducts, setMyProducts] = useState([]);
 //ici on cree le state pour la modal
   const[showModal, setShowModal] = useState(false);

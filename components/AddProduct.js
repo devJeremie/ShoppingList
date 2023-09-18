@@ -8,6 +8,7 @@ import BodyText from './BodyText';
 
 import ButtonComponent from './ButtonComponent';
 import Input from './Input';
+import AppStyles from '../constants/AppStyles';
 
         
 const AddProducts = ({ submitHandler, displayModal, cancelNewProduct }) => {
@@ -36,7 +37,7 @@ const AddProducts = ({ submitHandler, displayModal, cancelNewProduct }) => {
       >
         <View style={styles.inputContainer}>
 
-          <BodyText>Veuillez indiquer un produit</BodyText>
+          <BodyText style={AppStyles.headerTwo}>Veuillez indiquer un produit</BodyText>
            
             <Input 
                style={styles.textInput}
